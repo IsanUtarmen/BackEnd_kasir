@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('menu', function (Blueprint $table) {
             $table->id();
             $table->foreignId('jenis_id');
             $table->string('nama_menu', 255);
             $table->double('harga');
+            $table->string('image', 255);
             $table->string('deskripsi', 255);
             $table->timestamps();
             $table->foreign('jenis_id')->references('id')->on('jenis');
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('menu');
     }
 };

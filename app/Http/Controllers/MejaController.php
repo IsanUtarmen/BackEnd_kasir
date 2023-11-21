@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\meja;
 use App\Http\Requests\StoremejaRequest;
 use App\Http\Requests\UpdatemejaRequest;
+use Exception;
+use PDOException;
 
 class MejaController extends Controller
 {
@@ -13,7 +15,13 @@ class MejaController extends Controller
      */
     public function index()
     {
-        //
+        return $data = meja::get();
+        try {
+            $data = meja::get();
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return response()->json(['status' => false, 'message' => 'gagal menampilkan data']);
+        }
     }
 
     /**
@@ -29,7 +37,12 @@ class MejaController extends Controller
      */
     public function store(StoremejaRequest $request)
     {
-        //
+        try {
+            $data = meja::create($request->all());
+            return response()->json(['status' => true, 'message' => ' input data success', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return response()->json(['status' => false, 'message' => 'gagal menampilkan data']);
+        }
     }
 
     /**
@@ -51,9 +64,15 @@ class MejaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatemejaRequest $request, meja $meja)
+    public function update(StoremejaRequest $request, meja $meja)
     {
-        //
+        try {
+            $validated  = $request->validated();
+            $data = $meja->update($validated);
+            return response()->json(['status' => true, 'message' => ' update data sukses', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return response()->json(['status' => false, 'message' => 'gagal update data', 'error_type' => $e]);
+        }
     }
 
     /**
@@ -61,6 +80,11 @@ class MejaController extends Controller
      */
     public function destroy(meja $meja)
     {
-        //
+        try {
+            $data = $meja->delete();
+            return response()->json(['status' => true, 'message' => ' delete data sukses', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return response()->json(['status' => false, 'message' => 'gagal menghapus data']);
+        }
     }
 }

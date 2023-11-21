@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\pelanggan;
-use App\Http\Requests\StorepelangganRequest;
-use App\Http\Requests\UpdatepelangganRequest;
+use App\Models\Pelanggan;
+use App\Http\Requests\PelangganRequest;
+use Exception;
+use PDOException;
 
 class PelangganController extends Controller
 {
@@ -13,7 +14,12 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $data = Pelanggan::get();
+            return Response()->json(['status' => true, 'message' => 'success', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return Response()->json(['status' => false, 'message' => 'gagal menampilkan data']);
+        }
     }
 
     /**
@@ -27,15 +33,20 @@ class PelangganController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepelangganRequest $request)
+    public function store(PelangganRequest $request)
     {
-        //
+        try {
+            $data = Pelanggan::create($request->all());
+            return response()->json(['status' => true, 'message' => 'input success', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return response()->json(['status' => false, 'message' => 'gagal input data']);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(pelanggan $pelanggan)
+    public function show(Pelanggan $pelanggan)
     {
         //
     }
@@ -43,7 +54,7 @@ class PelangganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(pelanggan $pelanggan)
+    public function edit(Pelanggan $pelanggan)
     {
         //
     }
@@ -51,16 +62,26 @@ class PelangganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepelangganRequest $request, pelanggan $pelanggan)
+    public function update(PelangganRequest $request, Pelanggan $pelanggan)
     {
-        //
+        try {
+            $data = $pelanggan->update($request->all());
+            return response()->json(['status' => true, 'message' => ' update data sukses', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return response()->json(['status' => false, 'message' => 'gagal update data', 'error_type' => $e]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(pelanggan $pelanggan)
+    public function destroy(Pelanggan $pelanggan)
     {
-        //
+        try {
+            $data = $pelanggan->delete();
+            return Response()->json(['status' => true, 'message' => 'data has been deleted', 'data' => $data]);
+        } catch (Exception | PDOException $e) {
+            return Response()->json(['status' => false, 'message' => 'data failed to delete']);
+        }
     }
 }

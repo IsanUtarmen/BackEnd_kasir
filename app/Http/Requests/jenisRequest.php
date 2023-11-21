@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoremejaRequest extends FormRequest
+class JenisRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class StoremejaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nomor_meja' => 'required',
-            'kapasitas'  => 'required',
-            'status'     => 'required',
+            'kategori_id' => 'required',
+            'nama_jenis' => 'required'
+
         ];
     }
 

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class StorepemesananRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StorepemesananRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,21 @@ class StorepemesananRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'meja_id'   => 'required',
+            'tanggal_pemesanan' => 'required',
+            'jam_mulai' => 'required',
+            'jam_selesai'   => 'required',
+            'nama_pemesan'  => 'required',
+            'jumlah_pelanggan'  => 'required',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validator errors',
+            'data' => $validator->errors()
+        ]));
     }
 }

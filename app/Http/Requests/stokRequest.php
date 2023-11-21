@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoremejaRequest extends FormRequest
+class StokRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,6 @@ class StoremejaRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,9 +23,8 @@ class StoremejaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nomor_meja' => 'required',
-            'kapasitas'  => 'required',
-            'status'     => 'required',
+            'menu_id' => 'required',
+            'jumlah' => 'required',
         ];
     }
 
@@ -34,7 +32,7 @@ class StoremejaRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'success' => false,
-            'message' => 'Validator errors',
+            'message' => 'Validation errors',
             'data' => $validator->errors()
         ]));
     }
